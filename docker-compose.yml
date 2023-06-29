@@ -1,0 +1,43 @@
+version: '3.4'
+
+services:
+  postgresql-master:
+    image: bitnami/postgresql:latest
+    restart: always
+    volumes:
+      - postgresql_master_data:/bitnami/postgresql
+    environment:
+      - POSTGRESQL_REPLICATION_MODE=master
+      - POSTGRESQL_REPLICATION_USER=postgres
+      - POSTGRESQL_REPLICATION_PASSWORD=Pabpwxx4urbkXIpo
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=Pabpwxx4urbkXIpo
+      - POSTGRESQL_DATABASE=database
+      - POSTGRESQL_SYNCHRONOUS_COMMIT_MODE=off
+      - POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS=1
+    networks:
+      - net
+    ports:
+      - 5432:5432
+  redis:
+    image: docker.io/bitnami/redis:latest
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - 63790:6379
+    volumes:
+      - redis_data:/bitnami/redis/data
+
+volumes:
+  redis_data:
+    driver: local
+  postgresql_master_data:
+    driver: local
+  redis-data:
+    driver: local
+
+networks:
+  net:
+    driver: bridge

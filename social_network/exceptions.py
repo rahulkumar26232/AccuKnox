@@ -1,0 +1,2 @@
+class SelfRequestException(Exception):
+    pass
